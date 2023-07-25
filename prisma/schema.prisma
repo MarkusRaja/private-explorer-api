@@ -1,0 +1,55 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model blocks {
+  id               Int     @id @default(autoincrement())
+  number           Int?    @unique
+  hash             String? @unique
+  parentHash       String
+  baseFeePerGas    Int
+  nonce            String?
+  sha3Uncles       String
+  logsBloom        String? @db.LongText
+  transactionsRoot String
+  stateRoot        String
+  miner            String
+  difficulty       String
+  totalDifficulty  String
+  extraData        String
+  size             Int
+  gasLimit         Int
+  gasUsed          Int
+  timestamp        Int
+}
+
+model transactions {
+  id               Int     @id @default(autoincrement())
+  hash             String  @unique
+  nonce            Int
+  blockHash        String?
+  blockNumber      Int?
+  transactionIndex Int?
+  from             String
+  to               String?
+  contractAddress  String?
+  value            String
+  gasPrice         String
+  gas              Int
+  input            String  @db.LongText
+}
+
+model addresses {
+  id         Int     @id @default(autoincrement())
+  address    String  @unique
+  balance    String  @default("0")
+  isContract Boolean @default(false)
+}
